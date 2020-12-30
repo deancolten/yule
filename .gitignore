@@ -1,1 +1,9 @@
+#VSCode
 .vscode
+
+#Python
+__pycache__
+
+#Pipenv
+Pipfile
+Pipfile.lock
