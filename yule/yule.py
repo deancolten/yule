@@ -18,19 +18,19 @@ class YuleLogger(object):
     # PRINT LOG METHODS
 
     def info(self, msg):
-        """ Set log level to INFO"""
+        """ Record Log Entry at level INFO"""
 
         if self._level_check('INFO'):
             print(f"{self.id}: INFO - {msg}.")
     
     def warning(self, msg):
-        """ Set log level to WARNING """
+        """ Record Log Entry at level WARNING """
 
         if self._level_check('WARNING'):
             print(f"{self.id}: WARNING - {msg}.")
     
     def error(self, msg):
-        """ Set log level to ERROR """
+        """ Record Log Entry at level ERROR """
 
         if self._level_check('ERROR'):
             print(f"{self.id}: ERROR - {msg}.")
