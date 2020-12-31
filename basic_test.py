@@ -1,7 +1,6 @@
-from yule.yule import YuleLogger
-
-l1 = YuleLogger(id="Yule", level=2)
-l1.set_level("INFO")
+from yule.yulelog import YuleLogger
+l1 = YuleLogger(level=2, file_path="/dev/yule/yule", to_file=True)
+l1.set_level(2)
 
 
 def add_one(number):
@@ -25,6 +24,5 @@ x = 10
 y = 2
 z = 100
 
-print(double_number(add_one(x) * double_number(y)))
-
+add_one(y * double_number(z))
 double_number('six')
