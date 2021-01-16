@@ -10,3 +10,6 @@ Pipfile.lock
 
 # Temporary
 proto.py
+
+# Logs
+**.log
