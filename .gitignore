@@ -7,3 +7,9 @@ __pycache__
 #Pipenv
 Pipfile
 Pipfile.lock
+
+# Temporary
+proto.py
+
+# Logs
+**.log
