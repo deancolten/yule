@@ -1,6 +1,6 @@
 from yule.yulelog import YuleLogger
 l1 = YuleLogger(level=2, file_path="/dev/yule/yule", to_file=True)
-l1.set_level(2)
+l1.set_level(0)
 
 
 def add_one(number):

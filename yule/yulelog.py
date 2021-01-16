@@ -45,19 +45,19 @@ class YuleLogger(object):
         """ Record Log Entry at level INFO"""
 
         if self._level_check(0):
-            self._create_log_entry(content=msg, i_level=0)
+            self._record_log_entry(Entry(content=msg, level=0))
 
     def warning(self, msg):
         """ Record Log Entry at level WARNING """
 
         if self._level_check(1):
-            self._create_log_entry(content=msg, i_level=1)
+            self._record_log_entry(Entry(content=msg, level=1))
 
     def error(self, msg):
         """ Record Log Entry at level ERROR """
 
         if self._level_check(2):
-            self._create_log_entry(content=msg, i_level=2)
+            self._record_log_entry(Entry(content=msg, level=2))
 
     # CONFIG METHODS
 
@@ -78,19 +78,29 @@ class YuleLogger(object):
         """ Compares input level to self._level and returns bool"""
         return (self._level <= level)
 
-    def _create_log_entry(self, content, i_level):
+    def _record_log_entry(self, entry):
         """Creates log entry and prints to console and/or log file according to config"""
+
         # get level as string
-        level_str = level_from_int(confirm_int(i_level))
+        level_str = level_from_int(confirm_int(entry.level))
+
         # HARDCODED SYNTAX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        log_msg = f"{self.id} | {level_str}: {content}"
+        log_msg = f"{self.id} | {level_str}: {entry.content}"
         if self.to_console:
-            print(self.color_list[i_level] + log_msg + Fore.RESET)
+            print(self.color_list[entry.level] + log_msg + Fore.RESET)
         if self.to_file:
             self._log_file.record_entry(log_msg)
 
 
+class Entry(object):
+    """ Yule log entry object"""
+
+    def __init__(self, content, level):
+        self.content = content
+        self.level = level
+
 # **********FUNCTIONS**************
+
 
 def confirm_int(i_level):
     if type(i_level) == int:
