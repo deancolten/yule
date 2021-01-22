@@ -10,7 +10,7 @@ A python logger
 ## Example
 
 ```python
-from yule.yulelog import YuleLogger
+from yule import YuleLogger
 
 logger = YuleLogger(level=2,
                 file_path="LOG FILE PATH HERE",

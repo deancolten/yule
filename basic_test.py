@@ -1,4 +1,4 @@
-from yule.yulelog import YuleLogger, YuleSyntax
+from yule import *
 l1 = YuleLogger(level=2,
                 file_path="/dev/yule/yule",
                 to_file=True,
@@ -31,6 +31,6 @@ z = 100
 
 l1._syntaxer.update_syntax('%N - %L: %M')
 l1.clear_log_file()
-# double_number('trish')
-# add_one(z)
-# add_one(double_number(x))
+double_number('trish')
+add_one(z)
+add_one(double_number(x))
