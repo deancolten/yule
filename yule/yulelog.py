@@ -1,5 +1,6 @@
 from yule.const import DEF_LEVELS, DEF_COLORS
 from yule.log_file import LogFile
+from datetime import datetime
 from colorama import Fore, init as c_init
 c_init()
 
@@ -38,6 +39,11 @@ class YuleLogger(object):
             self.id = level_from_str(level)
 
         self._log_file = LogFile(name=self.id, location=self._file_path)
+
+        self._syntaxer = YuleSyntax(
+            log_name=self.id,
+            syntax_string=None
+        )
 
     # LOG METHODS
 
@@ -84,8 +90,8 @@ class YuleLogger(object):
         # get level as string
         level_str = level_from_int(confirm_int(entry.level))
 
-        # HARDCODED SYNTAX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        log_msg = f"{self.id} | {level_str}: {entry.content}"
+        # log entry to console and/or file
+        log_msg = self._syntaxer.format_entry(entry.content, level_str)
         if self.to_console:
             print(self.color_list[entry.level] + log_msg + Fore.RESET)
         if self.to_file:
@@ -99,7 +105,86 @@ class Entry(object):
         self.content = content
         self.level = level
 
-# **********FUNCTIONS**************
+    def __repr__(self):
+        return f"Yule Entry Object - Level:{self.level}; Content: {self.content}"
+
+
+class YuleSyntax(object):
+
+    """Syntax Class for YuleLog"""
+
+    # class const
+    PREPROCESS_CHARS = ['N']
+    REALTIME_CHARS = ['D', 'T', 'M', 'L']
+    DEFAULT_SYNTAX_STR = '%N | %D:%T | %L - %M '
+
+    def __init__(self, log_name, syntax_string=None):
+        """Initialize Syntax Object"""
+
+        self.log_name = log_name
+        if syntax_string:
+            self.update_syntax(syntax_string)
+        else:
+            self.update_syntax(YuleSyntax.DEFAULT_SYNTAX_STR)
+
+    def update_syntax(self, syntax_string):
+        """Update self.syntax_string (Preprocessor String)"""
+
+        pre_process_string = []
+        push = pre_process_string.append
+        skip = False
+
+        for i in range(len(syntax_string)):
+            if skip:
+                skip = False
+            else:
+                if syntax_string[i] == '%':
+                    ch = syntax_string[i+1]
+                    if ch in YuleSyntax.PREPROCESS_CHARS:
+                        if ch == 'N':
+                            push(self.log_name)
+                        skip = True
+                    else:
+                        push(syntax_string[i])
+                else:
+                    push(syntax_string[i])
+        self.syntax_string = ''.join(pre_process_string)
+
+    def format_entry(self, msg, level):
+        """Uses preprocessed syntax string to generate formatted output string"""
+
+        formatted = []
+        push = formatted.append
+        skip = False
+
+        for i in range(len(self.syntax_string)):
+            if skip:
+                skip = False
+            else:
+                if self.syntax_string[i] == '%':
+                    ch = self.syntax_string[i+1]
+                    if ch in YuleSyntax.REALTIME_CHARS:
+                        # DATE
+                        if ch == 'D':
+                            push(datetime.now().strftime('%D'))
+                        # TIME
+                        elif ch == 'T':
+                            push(datetime.now().strftime('%T'))
+                        # MESSAGE
+                        elif ch == 'M':
+                            push(msg)
+                        # LEVEL
+                        elif ch == 'L':
+                            push(level)
+                        skip = True
+
+                    else:
+                        push(self.syntax_string[i])
+                else:
+                    push(self.syntax_string[i])
+        return ''.join(formatted)
+
+        # **********FUNCTIONS**************
 
 
 def confirm_int(i_level):
