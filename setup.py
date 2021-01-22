@@ -3,9 +3,10 @@ from pathlib import Path
 
 setuptools.setup(
     name="yule",
-    version='0.0.3',
+    version='0.0.4',
     description="A logging package for python",
     long_description=Path("README.md").read_text(),
+    long_description_content_type='text/markdown',
     packages=setuptools.find_packages(),
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",

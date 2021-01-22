@@ -3,13 +3,13 @@ A python logger
 
 
 ## Install
-'''
-pip install yule
-'''
+
+`pip install yule`
+
 
 ## Example
 
-'''python
+```python
 from yule.yulelog import YuleLogger
 
 logger = YuleLogger(level=2,
@@ -20,5 +20,4 @@ logger = YuleLogger(level=2,
 
 logger.info("This is info")
 logger.warning("This is a warning")
-logger.error("This is an error")
-'''
+logger.error("This is an error")```
