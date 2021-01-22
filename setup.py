@@ -3,7 +3,7 @@ from pathlib import Path
 
 setuptools.setup(
     name="yule",
-    version='0.0.4',
+    version='0.0.5',
     description="A logging package for python",
     long_description=Path("README.md").read_text(),
     long_description_content_type='text/markdown',
