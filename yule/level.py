@@ -18,6 +18,9 @@ class YLevel(object):
     def __str__(self):
         return self.name
 
+    def __int__(self):
+        return self.value
+
 
 class Level(object):
     debug = YLevel(value=0, name='DEBUG')
