@@ -1,37 +1,42 @@
-from yule import *
-l1 = YuleLogger(level=2,
+from yule import YuleLogger
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+GM_LOGIN = os.environ.get("GM_LOGIN")
+GM_PASS = os.environ.get("GM_PASS")
+
+l1 = YuleLogger(level=0,
                 file_path="/dev/yule/yule",
                 to_file=True,
                 id="BasicTestLog"
                 )
-l1.set_level(Level.debug)
 
-
-def add_one(number):
-    l1.info(f"Add One before number - {number}")
-    number += 1
-    l1.warning(f"Add One after number - {number}")
-    return number
-
-
-def double_number(number):
-    for _ in range(0, 12):
-        l1.info(f"Double before number - {number}")
-        try:
-            number = int(number) * 2
-            l1.warning(f"Double after number - {number}")
-        except:
-            l1.error("Function Double requires type int")
-    return number
-
-
-x = 10
-y = 2
-z = 100
-
-l1.set_syntax('%D@%T|%N - %L: %M')
 l1.clear_log_file()
-l1.error("CRITICAL")
-l1.warning("CRITICAL")
-l1.info("CRITICAL")
-l1.debug(1.289)
+
+l1.debug("debug test")
+l1.info("info test")
+l1.warning("warning test")
+l1.error("error test")
+
+l1.debug(100)
+l1.info(0 < 1)
+l1.warning(l1)
+l1.error(False)
+
+l1.set_syntax("Syntax Test")
+l1.debug("debug test")
+l1.info("info test")
+l1.warning("warning test")
+l1.error("error test")
+
+l1.set_syntax(None)
+l1.error("Syntax Change Test")
+
+l1.setup_gmail(GM_LOGIN, GM_PASS)
+l1.send_gmail(
+    "Basic Test",
+    "Content is here",
+    "coltenrdean@gmail.com"
+)

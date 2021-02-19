@@ -1,6 +1,7 @@
 from yule.const import DEF_LEVELS, DEF_COLORS, DEF_SYNTAX
 from yule.log_file import LogFile
 from yule.level import Level, YLevel
+from yule.mail import Gmailer
 from datetime import datetime
 from colorama import Fore, init as c_init
 c_init()
@@ -18,7 +19,7 @@ class YuleLogger(object):
         to_console=True,
         to_file=False,
         file_path=None,
-        level=Level.error,
+        level=Level.error
 
     ):
         """Logger Init"""
@@ -78,6 +79,10 @@ class YuleLogger(object):
 
     # CONFIG METHODS
 
+    def get_level(self):
+        """Returns YLevel"""
+        return(self._level)
+
     def set_level(self, level):
         """ Sets the logger level """
 
@@ -107,8 +112,23 @@ class YuleLogger(object):
         """Set string used for custom syntax"""
         if type(syntax_string) == str:
             self._syntaxer.update_syntax(syntax_string)
+        elif not syntax_string:
+            self._syntaxer.update_syntax(DEF_SYNTAX)
         else:
             raise TypeError("arg syntax_string must be type str")
+
+    def setup_gmail(self, user, password):
+        """Setup Gmail Instance for YuleLogger"""
+        self._mailer = Gmailer(user=user, password=password)
+
+    def send_gmail(self, subj, msg, to_email, from_email=None):
+        """Send email with Gmail via SMTP"""
+        self._mailer.send_mail(
+            subject=f"{self.id} - {subj}",
+            message=msg,
+            to_mail=to_email,
+            from_mail=from_email
+        )
 
     # PRIVATE METHODS
 
