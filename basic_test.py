@@ -4,7 +4,7 @@ l1 = YuleLogger(level=2,
                 to_file=True,
                 id="BasicTestLog"
                 )
-l1.set_level(1)
+l1.set_level(Level.debug)
 
 
 def add_one(number):
@@ -29,8 +29,9 @@ x = 10
 y = 2
 z = 100
 
-l1._syntaxer.update_syntax('%N - %L: %M')
+l1.set_syntax('%D@%T|%N - %L: %M')
 l1.clear_log_file()
-double_number('trish')
-add_one(z)
-add_one(double_number(x))
+l1.error("CRITICAL")
+l1.warning("CRITICAL")
+l1.info("CRITICAL")
+l1.debug(1.289)
